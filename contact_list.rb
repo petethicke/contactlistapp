@@ -10,9 +10,23 @@ class ContactList
   end
 
   def cli_response
-    response = gets.chomp.downcase
+    @response = gets.chomp.downcase
   end
 
+  def menu_select (responsee)
+    case response
+    when 'new'
+      #create new contact
+    when 'list'
+      #lists all contacts
+    when 'show'
+      #shows a specific contact
+    when 'find'
+      #find a specific contact
+    else
+      puts 'I do not understand'
+    end
+  end
 end
 
 

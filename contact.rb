@@ -5,10 +5,13 @@ class Contact
  
   def initialize(name, email)
     # TODO: assign local variables to instance variables
+    @name = name
+    @email = email
   end
  
   def to_s
     # TODO: return string representation of Contact
+    contact_to_s = 
   end
  
   ## Class Methods

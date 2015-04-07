@@ -25,7 +25,7 @@ class Contact
   def menu_select (responsee)
     case response
     when 'new'
-      new_contact
+      @new_contact
     when 'list'
       #lists all contacts
     when 'show'
@@ -46,7 +46,8 @@ class Contact
 
   def to_s
     # TODO: return string representation of Contact
-    contact_to_s = new_contact.to_s
+    @email_to_s = @email.to_s
+    @name_to_s = @name.to_s
   end
  
   ## Class Methods

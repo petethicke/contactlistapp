@@ -1,77 +1,58 @@
-require_relative 'contact_list'
-
+require 'pry'
 class Contact
- 
+
   attr_accessor :name, :email
- 
+
   def initialize(name, email)
     # TODO: assign local variables to instance variables
-    @name = name
-    @email = email
-  end
- 
- def cli_menu
-    puts'Here is a list of available commands: 
-    new  - Create a new contact
-    list - List all contacts
-    show - Show a contact
-    find - Find a contact'
   end
 
-  def cli_response
-    @response = gets.chomp.downcase
-  end
-
-  def menu_select (responsee)
-    case response
-    when 'new'
-      @new_contact
-    when 'list'
-      #lists all contacts
-    when 'show'
-      #shows a specific contact
-    when 'find'
-      #find a specific contact
-    else
-      puts 'I do not understand'
-    end
-  end
-
-  def new_contact
-    puts 'Enter full name of contact'
-    @full_name = gets.chomp
-    puts 'Enter email address of contact'
-    @email_address = gets.chomp
-  end
-
+  
   def to_s
     # TODO: return string representation of Contact
-    @email_to_s = @email.to_s
-    @name_to_s = @name.to_s
+    "Name: #{@name}, Email: #{@email}"
   end
- 
+
+
+
+
+
   ## Class Methods
   class << self
-    def create(name, email)
-      # TODO: Will initialize a contact as well as add it to the list of contacts
 
-      CSV.open("./contacts.csv", "wb") do |csv|
-      csv << [name, email] 
+   #@@contacts = CSV.read("contacts.csv")
+
+   def create(name, email)
+      # TODO: Will initialize a contact as well as add it to the list of contacts
+      CSV.open("contacts.csv", "a") do |row|
+        row << [name, email]  
+      end
     end
-  end
- 
+
     def find(index)
       # TODO: Will find and return contact by index
+      CSV.foreach('contacts.csv') do |row|
+        row.each do |element|
+          if element.include 
+      end
     end
- 
+
     def all
       # TODO: Return the list of contacts, as is
+      CSV.foreach('contacts.csv') do |row|
+        puts row.inspect
+      end
     end
     
     def show(id)
       # TODO: Show a contact, based on ID
+      csvIndex = 0
+      CSV.foreach('contacts.csv') do |row|
+        csvIndex += 1
+        if csvIndex == id.to_i
+          p "Name :#{row[0]} Email: #{row[1]}"
+        end
+      end
     end
-    
   end
- 
 end

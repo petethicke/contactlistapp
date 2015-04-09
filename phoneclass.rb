@@ -1,41 +1,14 @@
-# class Phone 
-  
-#   attr_accessor :number, :type
 
-#   def initialize(number, type)
-#     @number = number
-#     @type = type
-#   end
+class Phone
+  attr_accessor :type, :numbers
 
-#   def self.get_number
-#     CSV.open('contacts.csv', 'a') do |row|
-#       line = []
-#       line << Contact.name
-#       line << Contact.email
-#       Contact.numbers.each do |number|
-#         line << "#{type} : #{number}"
-#       end
-#       csv << line
-#     end
-#   end
-
-#   def self.return_number
-
-#   end
-
-
-# end
-
-class PhoneNumber
-  attr_accessor :type, :digits
-
-  def initialize(type, number)
+  def initialize(type, numbers)
     @type = type
-    @number = number
+    @numbers = numbers
   end
 
   def to_s
-    "#{@type}: #{number}"
+    "#{@type}: #{numbers}"
   end
 
 end

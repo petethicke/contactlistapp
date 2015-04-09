@@ -1,10 +1,14 @@
-require 'pry'
+#require 'pry'
+
+
 class Contact
 
-  attr_accessor :name, :email
+  attr_accessor :name, :email, :numbers
 
   def initialize(name, email)
     # TODO: assign local variables to instance variables
+    @name = name
+    @email = email 
   end
 
   
@@ -16,48 +20,33 @@ class Contact
   ## Class Methods
   class << self
 
-   #@@contacts = CSV.read("contacts.csv")
-
- 
-
     def init
       @@contacts = []
       
       CSV.readlines('contacts.csv').each do |row|
-        phones = []
-        name = row[0]
-        email = row[1]
-        row[2..-1].each do |phone|
+        @name = row[0]
+        @email = row[1]
+        row[2..-1].each do |numbers|
           @parts = phone.split(":")
           type = @parts[0]
-          number = @parts[1]
-          phones << PhoneNumber.new(type, digits)
+          numbers = @parts[1]
+          phone_numbers << Phone.new(type, numbers)
         end
-        @@list_of_contacts << Contact.new(name, email, phones)
+        @@contacts << Contact.new(name, email, numbers)
       end
     end
 
-    def create(name, email)
-      # TODO: Will initialize a contact as well as add it to the list of contacts
-      CSV.open("contacts.csv", "a") do |row|
-        row << [name, email]  
-      end
-    end
-
-
-    def create(name, email, phone_number=[])
-      CSV.open('contacts.csv', 'a') do |csv_object|
+    def create(name, email, numbers=[])
+      CSV.open('contacts.csv', 'a') do |row|
         line = []
-        line<< new_contact.name
-        line<< new_contact.email
-        new_contact.phone_number.each do |ph|
-          line<< "#{ph.type}:#{ph.digits}"
+        line << name
+        line << email
+        numbers.each do |ph|
+          line << "#{ph.type}:#{ph.numbers}"
+        end
+        row << line
       end
-        csv_object << line
-      end
-      return 'success'
     end
-
 
     def find(word)
       # TODO: Will find and return contact by index
@@ -83,7 +72,7 @@ class Contact
       CSV.foreach('contacts.csv') do |row|
         csvIndex += 1
         if csvIndex == id.to_i
-          p "Name :#{row[0]} Email: #{row[1]}"
+          p "Name: #{row[0]} Email: #{row[1]}"
         end
       end
       csvIndex = 0

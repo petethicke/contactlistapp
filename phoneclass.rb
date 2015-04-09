@@ -10,5 +10,4 @@ class Phone
   def to_s
     "#{@type}: #{numbers}"
   end
-
 end

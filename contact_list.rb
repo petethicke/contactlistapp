@@ -41,16 +41,16 @@ when 'new'
   puts Contact.create(name, email, phone_numbers)
 
 
-  when 'list'
-    Contact.all 
-  end
+when 'list'
+  Contact.all 
+end
 
-  case
-  when ARGV[0] == 'show' && !ARGV[1].nil?
-    Contact.show(ARGV[1])
-  when ARGV[0] == 'find' && !ARGV[1].nil?
-    Contact.find(ARGV[1])
-  end
+case
+when ARGV[0] == 'show' && !ARGV[1].nil?
+  Contact.show(ARGV[1])
+when ARGV[0] == 'find' && !ARGV[1].nil?
+  Contact.find(ARGV[1])
+end
 
 
 

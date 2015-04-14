@@ -5,7 +5,7 @@ require_relative 'contact_database'
 
 
 class Contact
-attr_accessor :first_name, :last_name, :email
+  attr_accessor :first_name, :last_name, :email
 
   def initialize (first_name, last_name, email)
     @first_name = first_name
@@ -19,38 +19,45 @@ attr_accessor :first_name, :last_name, :email
 
   def save
     if @id == nil
-    sql = 'INSERT INTO contacts (firstname, lastname, email)
+      sql = 'INSERT INTO contacts (firstname, lastname, email)
       VALUES ($1, $2, $3)'
-    results = Db.connection.exec(sql, [first_name, last_name, email])
-    @id = results[0]['id']
-  else
-    Db.connection.exec('UPDATE contacts SET firstname = $1, lastname = $2, email = $3)
-      VALUES ($1, $2, $3)', [first_name, last_name, email])
+      results = Db.connection.exec(sql, [first_name, last_name, email])
+      @id = results[0]['id']
+    else
+      sql = 'UPDATE contacts SET firstname = $1, lastname = $2, email = $3)
+      VALUES ($1, $2, $3)'
+      Db.connection.exec(sql, [first_name, last_name, email])
     end 
   end
+
+  def self.list
+    sql = 'SELECT * FROM contacts'
+    results = Db.connection.exec(sql)
+    results.each do |contact|
+      puts contact.inspect
+    end
+  end
+
+#   def show(id)
+#     sql = 'SELECT * FROM contacts WHERE id = $1'
+#     results = Db.connection.exec(sql, [id])
+#     col = results[0]
+#     puts col.inspect
+#   end
+
+# sql = "SELECT * FROM stagedocs_venue WHERE id=$1"
+#         results = $conn.exec_params(sql, [id])
+#         row = results[0]
+#         puts row.inspect
+#         venue = Venue.new(row["name"], row["capacity"])
+#         venue.id = row["id"]
+#         venue
 end
 
-def save
-        if @id == nil
-            sql = "INSERT INTO stagedocs_venue (name, capacity, city_id, notes, url, phone) VALUES ($1, $2, 1, '', '', '') RETURNING *"
-            results = $conn.exec_params(sql, [@name, @capacity])
-            @id = results[0]["id"]
-        else
-            sql = "UPDATE stagedocs_venue SET name=$1, capacity=$2 WHERE id=$3"
-            $conn.exec_params(sql, [@name, @capacity, @id])
-        end
 
 
 
-  print 'Enter first name: '
-  @first_name = gets.chomp
-  print 'Enter last name: '
-  @last_name = gets.chomp
-  print 'Enter Email: '
-  @email = gets.chomp
 
-contact = Contact.new("#{@first_name}" , "#{@last_name}", "#{@email}")
-contact.save
 
 #   def to_s
 #     # TODO: return string representation of Contact
@@ -63,7 +70,7 @@ contact.save
 
 
 #       @@contacts = []
-      
+
 #       CSV.readlines('contacts.csv').each do |row|
 #         @name = row[0]
 #         @email = row[1]
@@ -106,7 +113,7 @@ contact.save
 #         puts row.inspect
 #       end
 #     end
-    
+
 #     def show(id)
 #       # TODO: Show a contact, based on ID
 #       csvIndex = 0

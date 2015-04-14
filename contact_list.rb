@@ -11,7 +11,8 @@ when 'help'
   new  - Create a new contact
   list - List all contacts
   show - Show a contact
-  find - Find a contact'
+  find - Find a contact
+  delete - delete a contact'
 
 when 'new'
   #phone_numbers = []
@@ -51,12 +52,14 @@ when 'list'
   Contact.list 
 end
 
-# case
-# when ARGV[0] == 'show' && !ARGV[1].nil?
-#   Contact.show(ARGV[1])
-# when ARGV[0] == 'find' && !ARGV[1].nil?
-#   Contact.find(ARGV[1])
-# end
+case
+when ARGV[0] == 'show' && !ARGV[1].nil?
+  Contact.show(ARGV[1])
+when ARGV[0] == 'find' && !ARGV[1].nil?
+  Contact.find(ARGV[1])
+when ARGV[0] == 'delete' && !ARGV[1].nil?
+  Contact.destroy(ARGV[1])
+end
 
 
 

@@ -14,9 +14,6 @@ class Contact
     @id = nil
   end
 
-
-  
-
   def save
     if @id == nil
       sql = 'INSERT INTO contacts (firstname, lastname, email)
@@ -31,6 +28,12 @@ class Contact
     end 
   end
 
+  def self.destroy(id)
+    sql = 'DELETE FROM contacts WHERE id = $1'
+    results = Db.connection.exec(sql, [id])
+    del = results[0]
+  end
+
   def self.list
     sql = 'SELECT * FROM contacts'
     results = Db.connection.exec(sql)
@@ -39,21 +42,21 @@ class Contact
     end
   end
 
-  # def show(id)
-  #   sql = 'SELECT * FROM contacts WHERE id = $1'
-  #   results = Db.connection.exec(sql, [id])
-  #   col = results[0]
-  #   puts col.inspect
+  def self.show(id)
+    sql = 'SELECT * FROM contacts WHERE id = $1'
+    results = Db.connection.exec(sql, [id])
+    col = results[0]
+    puts col.inspect
+  end
 
-  # end
+  def self.find(word)
+    sql = "SELECT * FROM contacts WHERE word LIKE '%first_name%' OR LIKE '%last_name%'" 
+    results = Db.connection.exec(sql)
+    results.each do |contact|
+      puts contact.inspect
+    end
+  end
 
-# sql = "SELECT * FROM stagedocs_venue WHERE id=$1"
-#         results = $conn.exec_params(sql, [id])
-#         row = results[0]
-#         puts row.inspect
-#         venue = Venue.new(row["name"], row["capacity"])
-#         venue.id = row["id"]
-#         venue
 end
 
 

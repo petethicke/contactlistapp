@@ -20,8 +20,9 @@ class Contact
   def save
     if @id == nil
       sql = 'INSERT INTO contacts (firstname, lastname, email)
-      VALUES ($1, $2, $3)'
+      VALUES ($1, $2, $3) RETURNING *'
       results = Db.connection.exec(sql, [first_name, last_name, email])
+     puts results.inspect
       @id = results[0]['id']
     else
       sql = 'UPDATE contacts SET firstname = $1, lastname = $2, email = $3)
@@ -38,12 +39,13 @@ class Contact
     end
   end
 
-#   def show(id)
-#     sql = 'SELECT * FROM contacts WHERE id = $1'
-#     results = Db.connection.exec(sql, [id])
-#     col = results[0]
-#     puts col.inspect
-#   end
+  # def show(id)
+  #   sql = 'SELECT * FROM contacts WHERE id = $1'
+  #   results = Db.connection.exec(sql, [id])
+  #   col = results[0]
+  #   puts col.inspect
+
+  # end
 
 # sql = "SELECT * FROM stagedocs_venue WHERE id=$1"
 #         results = $conn.exec_params(sql, [id])

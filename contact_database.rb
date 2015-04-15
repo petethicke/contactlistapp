@@ -1,4 +1,3 @@
-
 class Db
  def self.connection
     puts "establishing connection ..."

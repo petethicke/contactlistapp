@@ -12,7 +12,9 @@ when 'help'
   update - Update a contact
   list - List all contacts
   show - Show a contact
-  find - Find a contact
+  lastname - Find by last name
+  firstname - Find by first name
+  email - Find by email
   delete - delete a contact'
 
 when 'new'
@@ -24,7 +26,7 @@ when 'new'
   @email = gets.chomp
 
 
-  contact = Contact.new("#{@first_name}" , "#{@last_name}", "#{@email}")
+  contact = Contact.new("#{@first_name}", "#{@last_name}", "#{@email}")
   contact.save
 
 
@@ -34,8 +36,6 @@ when 'list'
 when 'show'
   if !ARGV[1].nil?
     puts Contact.show(ARGV[1])
-  else
-    false
   end
 
 when 'update' 
@@ -59,68 +59,29 @@ when 'update'
     end
   end
 
-when 'find by last name' 
-  if !ARGV[1].nil?
-    Contact.find_all_by_last_name(ARGV[1])
-  end
+when 'lastname' 
+  print  'Enter last name: '
+  ARGV.clear
+  last_name = STDIN.gets()
+  Contact.find_all_by_last_name("#{last_name}")
 
-when 'find by first name' 
-  if !ARGV[1].nil?
-    Contact.find_all_by_first_name(ARGV[1])
-  end
 
-when 'find by email' 
-  if !ARGV[1].nil?
-    Contact.find_by_email(ARGV[1])
-  end
+when 'firstname' 
+  print  'Enter first name: '
+  ARGV.clear
+  first_name = gets.chomp.to_s
+  Contact.find_all_by_first_name(first_name)
+
+
+when 'email' 
+  print  'Enter last email: '
+  ARGV.clear
+  last_name = STDIN.gets()
+    Contact.find_by_email("#{email}")
+
 
 when 'delete' 
   if !ARGV[1].nil?
     Contact.delete(ARGV[1])
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- # if Contact.emailpresent?(email)
-  #   puts 'Contact with that email already exists!'
-  #   exit
-  # end
-
-  #begin
-  #   puts 'Phone number? (y/n)'
-  #   if STDIN.gets.chomp.downcase == 'y'
-  #     phone = true
-  #     puts 'Enter the type'
-  #     type = STDIN.gets.chomp
-  #     puts 'Enter the number'
-  #     numbers = STDIN.gets.chomp
-  #     phone_numbers<<Phone.new(type, numbers)
-  #     puts phone_numbers
-  #   else
-  #     phone = false
-  #   end
-  # end while phone == true
-
-
-
-
-

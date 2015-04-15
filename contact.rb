@@ -5,7 +5,7 @@ require_relative 'contact_database'
 
 
 class Contact
-  attr_accessor :first_name, :last_name, :email
+  attr_accessor :first_name, :last_name, :email, :id
 
   def initialize (first_name, last_name, email)
     @first_name = first_name
@@ -19,41 +19,39 @@ class Contact
       sql = 'INSERT INTO contacts (firstname, lastname, email)
       VALUES ($1, $2, $3) RETURNING *'
       results = Db.connection.exec(sql, [first_name, last_name, email])
-     puts results.inspect
+      puts results.inspect
       @id = results[0]['id']
     else
-      sql = 'UPDATE contacts SET firstname = $1, lastname = $2, email = $3)
-      VALUES ($1, $2, $3)'
-      Db.connection.exec(sql, [first_name, last_name, email])
-    end 
+      sql = 'UPDATE contacts SET firstname=$1, lastname=$2, email=$3 WHERE id = $4'
+      Db.connection.exec(sql, [first_name, last_name, email, @id])
+    end
   end
 
-  def self.destroy(id)
+  def self.delete(id)
     sql = 'DELETE FROM contacts WHERE id = $1'
-    results = Db.connection.exec(sql, [id])
-    del = results[0]
+    results = Db.connection.exec(sql, [id.to_i])
   end
 
   def self.list
     sql = 'SELECT * FROM contacts'
     results = Db.connection.exec(sql)
     results.each do |contact|
-      puts contact.inspect
+      puts contact
     end
   end
 
   def self.show(id)
     sql = 'SELECT * FROM contacts WHERE id = $1'
-    results = Db.connection.exec(sql, [id])
-    col = results[0]
-    puts col.inspect
+    results = Db.connection.exec(sql, [id.to_i])
+    row = results[0]
+    return row
   end
 
   def self.find_all_by_last_name(name)
-    sql = "SELECT * FROM contacts WHERE lastname LIKE '%last_name%'" 
+    sql = "SELECT * FROM contacts WHERE lastname LIKE '%name%'" 
     results = Db.connection.exec(sql)
     results.each do |contact|
-      puts contact.inspect
+      puts contact
     end
   end
 
@@ -61,7 +59,7 @@ class Contact
     sql = "SELECT * FROM contacts WHERE firstname LIKE '%name%'" 
     results = Db.connection.exec(sql)
     results.each do |contact|
-      puts contact.inspect
+      puts contact
     end
   end
 
@@ -69,14 +67,20 @@ class Contact
     sql = "SELECT * FROM contacts WHERE "
     results = Db.connection.exec(sql)
     results.each do |contact|
-      puts contact.inspect
-    end
+      puts contact
   end
+end
 
 end
 
 
-
+# def emailpresent?(email)
+  #   CSV.foreach('contacts.csv') do |row|
+  #     if row[1].downcase == email.downcase
+  #       return true
+  #     end
+  #   end
+  # end
 
 
 
@@ -147,12 +151,7 @@ end
 #       csvIndex = 0
 #     end
 
-#     def emailpresent?(email)
-#       CSV.foreach('contacts.csv') do |row|
-#         if row[1].downcase == email.downcase
-#           return true
-#         end
-#       end
+#     
 #     end
 #   end
 # end

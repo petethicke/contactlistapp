@@ -1,6 +1,4 @@
 
-## TODO: Implement CSV reading/writing
-# require 'csv'
 class Db
  def self.connection
     puts "establishing connection ..."
@@ -12,12 +10,6 @@ class Db
       password: 'h17nDKFtIz29TrgH0pjDjJVHVn'
       )
   end
-
-
 end 
 
 
-#Read file
-# CSV.read('./contacts.csv')
-
-#Write to file

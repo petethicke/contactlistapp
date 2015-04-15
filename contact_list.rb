@@ -1,4 +1,4 @@
-#require 'pry'
+require 'active_record'
 
 require_relative 'contact'
 #require_relative 'contact_database'
@@ -24,8 +24,6 @@ when 'new'
   @last_name = gets.chomp
   print 'Enter Email: '
   @email = gets.chomp
-
-
   contact = Contact.new("#{@first_name}", "#{@last_name}", "#{@email}")
   contact.save
 

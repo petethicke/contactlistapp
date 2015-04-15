@@ -1,7 +1,11 @@
+require 'active_record'
+
 class Db
- def self.connection
+   def self.connection
+    #ActiveRecord::Base.logger = Logger.new(STDOUT)
     puts "establishing connection ..."
-    conn = PG.connect(
+    conn = ActiveRecord::Base.establish_connection(
+      adapter: 'postgresql',
       dbname: 'd8v920oslptohj',
       port: 5432,
       user: 'iqwceaexuceehd',
@@ -10,5 +14,4 @@ class Db
       )
   end
 end 
-
 

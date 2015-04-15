@@ -1,5 +1,6 @@
 #require 'pry'
 require 'pg'
+require 'active_record'
 
 require_relative 'contact_database'
 

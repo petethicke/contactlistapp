@@ -49,8 +49,24 @@ class Contact
     puts col.inspect
   end
 
-  def self.find(word)
-    sql = "SELECT * FROM contacts WHERE word LIKE '%first_name%' OR LIKE '%last_name%'" 
+  def self.find_all_by_last_name(name)
+    sql = "SELECT * FROM contacts WHERE lastname LIKE '%last_name%'" 
+    results = Db.connection.exec(sql)
+    results.each do |contact|
+      puts contact.inspect
+    end
+  end
+
+  def self.find_all_by_first_name(name)
+    sql = "SELECT * FROM contacts WHERE firstname LIKE '%name%'" 
+    results = Db.connection.exec(sql)
+    results.each do |contact|
+      puts contact.inspect
+    end
+  end
+
+  def find_by_email(email)
+    sql = "SELECT * FROM contacts WHERE "
     results = Db.connection.exec(sql)
     results.each do |contact|
       puts contact.inspect

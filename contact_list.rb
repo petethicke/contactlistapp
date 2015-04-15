@@ -25,10 +25,10 @@ when 'new'
   print 'Enter Email: '
   @email = gets.chomp
 
-  #if Contact.emailpresent?(email)
-    #puts 'Contact with that email already exists!'
-    #exit
-  #end
+  if Contact.emailpresent?(email)
+    puts 'Contact with that email already exists!'
+    exit
+  end
 
   #begin
   #   puts 'Phone number? (y/n)'

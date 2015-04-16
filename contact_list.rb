@@ -78,7 +78,7 @@ when 'firstname'
 when 'email' 
   print  'Enter last email: '
   ARGV.clear
-  last_name = gets.chomp.to_s
+  email = gets.chomp.to_s
   p Contact.where(email: email).take
 
 when 'delete' 

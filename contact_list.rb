@@ -1,9 +1,14 @@
 require 'active_record'
-
+require 'pg'
 require_relative 'contact'
-#require_relative 'contact_database'
-#require_relative 'phoneclass'
 
+ActiveRecord::Base.establish_connection(
+  adapter: 'postgresql',
+  dbname: 'contacts',
+  user: 'contactlistapp',
+  host: 'localhost',
+  password: 'contactlistapp'
+  )
 
 case ARGV[0]
 when 'help'
@@ -11,75 +16,74 @@ when 'help'
   new  - Create a new contact
   update - Update a contact
   list - List all contacts
-  show - Show a contact
-  lastname - Find by last name
-  firstname - Find by first name
+  show[id] - Show a contact by id number
+  lastname[last name] - Find by last name
+  firstname[first name] - Find by first name
   email - Find by email
-  delete - delete a contact'
+  delete[id] - delete a contact by id number'
 
 when 'new'
+  ARGV.clear
   print 'Enter first name: '
-  @first_name = gets.chomp
+  first_name = gets.chomp
   print 'Enter last name: '
-  @last_name = gets.chomp
+  last_name = gets.chomp
   print 'Enter Email: '
-  @email = gets.chomp
-  contact = Contact.new("#{@first_name}", "#{@last_name}", "#{@email}")
-  contact.save
+  email = gets.chomp
+  contact = Contact.create(firstname: first_name, lastname: last_name, email: email)
+  p 'Contact added'
 
 
 when 'list'
-  Contact.list 
+  Contact.all.map do |contact|
+    puts 'Name: ' + contact.firstname + ' ' + contact.lastname + ' || ' 'Email: ' + contact.email
+  end
 
 when 'show'
   if !ARGV[1].nil?
-    puts Contact.show(ARGV[1])
+    p Contact.find(ARGV[1]) 
   end
 
-when 'update' 
-  ARGV.shift
-  if !ARGV[0].nil?
-    id = ARGV[0]
-    ARGV.shift
+
+when 'update'
+  ARGV.clear
+  p 'Enter email of contact to update: ' 
+  email = gets.chomp 
+  ct_to_update = Contact.find_by_email(email)
+  if ct_to_update == nil
+    p 'Contact does not exist in database yet.'
+  else
     print 'Enter first name: '
     first_name = gets.chomp
     print 'Enter last name: '
     last_name = gets.chomp
     print 'Enter Email: '
     email = gets.chomp
-    row = Contact.show(id)
-    if row != nil
-      contact = Contact.new(first_name, last_name, email)
-      contact.id = (id)
-      contact.save
-    else
-      puts 'Contact not found!'
-    end
+    ct_to_update = Contact.update(ct_to_update.id, firstname: first_name, lastname: last_name, email: email)
+    ct_to_update.save
   end
 
 when 'lastname' 
   print  'Enter last name: '
   ARGV.clear
-  last_name = STDIN.gets()
-  Contact.find_all_by_last_name("#{last_name}")
-
+  last_name = gets.chomp.to_s
+  p Contact.where(lastname: last_name).take 
 
 when 'firstname' 
   print  'Enter first name: '
   ARGV.clear
   first_name = gets.chomp.to_s
-  Contact.find_all_by_first_name(first_name)
-
+  p Contact.where(firstname: first_name).take 
 
 when 'email' 
   print  'Enter last email: '
   ARGV.clear
-  last_name = STDIN.gets()
-    Contact.find_by_email("#{email}")
-
+  last_name = gets.chomp.to_s
+  p Contact.where(email: email).take
 
 when 'delete' 
   if !ARGV[1].nil?
-    Contact.delete(ARGV[1])
+    Contact.destroy(ARGV[1])
   end
 end
+
